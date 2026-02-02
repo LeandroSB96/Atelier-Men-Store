@@ -8,7 +8,7 @@ export interface Product {
   subcategory?: string;
   images: string[];
   sizes: string[];
-  colors: { name: string; hex: string }[];
+  colors: { name: string; hex: string; image?: string }[];
   stock: number;
   isNew?: boolean;
   isFeatured?: boolean;

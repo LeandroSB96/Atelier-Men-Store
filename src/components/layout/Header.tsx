@@ -33,29 +33,16 @@ const Header = () => {
               {isMenuOpen ? <X size={20} strokeWidth={1.5} /> : <Menu size={20} strokeWidth={1.5} />}
             </button>
 
-            {/* Logo - Left on mobile, Center on desktop */}
-            <Link to="/" className="lg:absolute lg:left-1/2 lg:-translate-x-1/2">
+            {/* Logo */}
+            <Link to="/" className="flex-shrink-0">
               <span className="font-heading text-xl lg:text-2xl font-medium tracking-tight text-foreground">
                 ATELIER
               </span>
             </Link>
 
-            {/* Desktop navigation - Left */}
-            <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
-              {navLinks.slice(0, 3).map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.href}
-                  className="text-[11px] font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 uppercase tracking-[0.12em]"
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </nav>
-
-            {/* Desktop navigation - Right */}
-            <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
-              {navLinks.slice(3).map((link) => (
+            {/* Desktop navigation - Centered */}
+            <nav className="hidden lg:flex items-center gap-8 flex-1 justify-center">
+              {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   to={link.href}
@@ -67,7 +54,7 @@ const Header = () => {
             </nav>
 
             {/* Actions */}
-            <div className="flex items-center gap-3 lg:gap-4">
+            <div className="flex items-center gap-3 lg:gap-4 ml-auto">
               <button 
                 onClick={() => setIsSearchOpen(true)}
                 className="p-2 text-foreground hover:text-muted-foreground transition-colors"

@@ -20,6 +20,25 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
+  // Obtener la imagen del color seleccionado si existe
+  const getImageForColor = () => {
+    if (!selectedColor) return product.images[selectedImage];
+    const color = product.colors.find(c => c.name === selectedColor);
+    return color?.image || product.images[selectedImage];
+  };
+
+  const handleColorSelect = (colorName: string) => {
+    setSelectedColor(colorName);
+    const color = product.colors.find(c => c.name === colorName);
+    // Si el color tiene imagen específica, usar esa; si no, mantener la imagen actual
+    if (color?.image) {
+      const imageIndex = product.images.indexOf(color.image);
+      if (imageIndex !== -1) {
+        setSelectedImage(imageIndex);
+      }
+    }
+  };
+
   if (!product) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -80,10 +99,10 @@ const ProductDetail = () => {
             <div className="space-y-4">
               <div className="relative aspect-[3/4] bg-card overflow-hidden">
                 <motion.img
-                  key={selectedImage}
+                  key={selectedColor || selectedImage}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  src={product.images[selectedImage]}
+                  src={getImageForColor()}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
@@ -170,7 +189,7 @@ const ProductDetail = () => {
                     {product.colors.map((color) => (
                       <button
                         key={color.name}
-                        onClick={() => setSelectedColor(color.name)}
+                        onClick={() => handleColorSelect(color.name)}
                         className={`w-10 h-10 rounded-full border-2 transition-all ${
                           selectedColor === color.name
                             ? 'border-foreground ring-2 ring-foreground ring-offset-2'

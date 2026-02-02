@@ -5,7 +5,7 @@ export const categories: Category[] = [
     id: '1',
     name: 'Remeras',
     slug: 'remeras',
-    image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600',
+    image: '/images/remeras/Modelo remera negra.png',
     description: 'Remeras de algodón premium'
   },
   {
@@ -54,15 +54,14 @@ export const products: Product[] = [
     description: 'Remera básica de algodón peinado 100%. Corte regular fit con cuello redondo reforzado. Ideal para uso diario.',
     category: 'remeras',
     images: [
-      'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800',
-      'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800'
+      '/images/remeras/Remera Essential negro.png'
     ],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     colors: [
-      { name: 'Blanco', hex: '#FFFFFF' },
-      { name: 'Negro', hex: '#1a1a1a' },
-      { name: 'Gris', hex: '#6b7280' },
-      { name: 'Navy', hex: '#1e3a5f' }
+      { name: 'Blanco', hex: '#FFFFFF', image: '/images/remeras/Remera Essential blanco.png' },
+      { name: 'Negro', hex: '#1a1a1a', image: '/images/remeras/Remera Essential negro.png' },
+      { name: 'Gris', hex: '#6b7280', image: '/images/remeras/Remera Essential gris.png' },
+      { name: 'Navy', hex: '#1e3a5f', image: '/images/remeras/Remera Essential navy.png' }
     ],
     stock: 45,
     isNew: true
