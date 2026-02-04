@@ -99,7 +99,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-16 pt-8 border-t border-background/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-background/40">
-          <p>© 2025 Atelier. Todos los derechos reservados.</p>
+          <p>© 2026 Atelier. Todos los derechos reservados.</p>
           <div className="flex items-center gap-4">
             {/* Visa */}
             <svg className="h-8 w-auto" viewBox="0 0 48 32" fill="none">

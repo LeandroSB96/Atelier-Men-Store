@@ -54,7 +54,8 @@ export const products: Product[] = [
     description: 'Remera básica de algodón peinado 100%. Corte regular fit con cuello redondo reforzado. Ideal para uso diario.',
     category: 'remeras',
     images: [
-      '/images/remeras/Remera Essential negro.png'
+      '/images/remeras/Remera Essential negro.png',
+      '/images/remeras/Modelo remera negra.png'
     ],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     colors: [
@@ -73,14 +74,14 @@ export const products: Product[] = [
     description: 'Remera oversize de algodón pesado 220gsm. Cuello reforzado y hombros caídos. Estilo streetwear.',
     category: 'remeras',
     images: [
-      'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800',
-      'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=800'
+      '/images/remeras overzise/Remera oversize oliva.png',
+      '/images/remeras overzise/Remera over modelo.png'
     ],
     sizes: ['M', 'L', 'XL', 'XXL'],
     colors: [
-      { name: 'Negro', hex: '#1a1a1a' },
-      { name: 'Crema', hex: '#F5F5DC' },
-      { name: 'Oliva', hex: '#556B2F' }
+      { name: 'Negro', hex: '#1a1a1a', image: '/images/remeras overzise/Remera oversize negro.png' },
+      { name: 'Crema', hex: '#F5F5DC', image: '/images/remeras overzise/Remera oversize crema.png' },
+      { name: 'Oliva', hex: '#556B2F', image: '/images/remeras overzise/Remera oversize oliva.png' }
     ],
     stock: 22,
     isNew: true

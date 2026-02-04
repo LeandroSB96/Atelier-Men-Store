@@ -69,7 +69,7 @@ const HeroSection = () => {
               className="absolute -bottom-6 -left-6 lg:left-auto lg:-right-6 bg-background p-6 shadow-lg"
             >
               <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Envío gratis</p>
-              <p className="text-sm font-medium mt-1">En compras +$50.000</p>
+              <p className="text-sm font-medium mt-1">En compras +$80.000</p>
             </motion.div>
           </motion.div>
         </div>
