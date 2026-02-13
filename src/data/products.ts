@@ -93,14 +93,14 @@ export const products: Product[] = [
     description: 'Remera estilo henley con botones de madera. Algodón suave con elastano para mayor comodidad.',
     category: 'remeras',
     images: [
-      'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=800',
-      'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800'
+      '/images/Remera Henley Manga Larga/Remera Henley gris.png',
+      '/images/Remera Henley Manga Larga/Mockup hiperrealista henley.png'
     ],
     sizes: ['S', 'M', 'L', 'XL'],
     colors: [
-      { name: 'Borgoña', hex: '#722F37' },
-      { name: 'Blanco', hex: '#FFFFFF' },
-      { name: 'Gris Oscuro', hex: '#374151' }
+      { name: 'Borgoña', hex: '#722F37', image: '/images/Remera Henley Manga Larga/Remera Henley borgoña.png' },
+      { name: 'Blanco', hex: '#FFFFFF', image: '/images/Remera Henley Manga Larga/Remera Henley blanco.png' },
+      { name: 'Gris Oscuro', hex: '#374151', image: '/images/Remera Henley Manga Larga/Remera Henley gris.png' }
     ],
     stock: 28,
     isFeatured: true
@@ -112,14 +112,14 @@ export const products: Product[] = [
     description: 'Remera con cuello en V de corte slim. Algodón pima peruano ultra suave.',
     category: 'remeras',
     images: [
-      'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800',
-      'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800'
+      '/images/Remera cuello V/Remera blanca cuello V.png',
+      '/images/Remera cuello V/Mockup hiperrealista.png'
     ],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     colors: [
-      { name: 'Negro', hex: '#1a1a1a' },
-      { name: 'Blanco', hex: '#FFFFFF' },
-      { name: 'Azul Marino', hex: '#0f172a' }
+      { name: 'Negro', hex: '#1a1a1a', image:'/images/Remera cuello V/Remera negra de homb.png' },
+      { name: 'Blanco', hex: '#FFFFFF', image:'/images/Remera cuello V/Remera blanca cuello V.png' },
+      { name: 'Azul Marino', hex: '#0f172a', image:'/images/Remera cuello V/Remera azul marino cuello V.png' }
     ],
     stock: 35
   },
@@ -130,15 +130,15 @@ export const products: Product[] = [
     description: 'Polo clásico de piqué de algodón. Cuello y puños con ribete. Logo bordado discreto.',
     category: 'remeras',
     images: [
-      'https://images.unsplash.com/photo-1625910513413-5fc84f2df70f?w=800',
-      'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800'
+      '/images/Remera Polo Classic/Remera Polo azul.png',
+      '/images/Remera Polo Classic/Mockup hiperrealista.png'
     ],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     colors: [
-      { name: 'Blanco', hex: '#FFFFFF' },
-      { name: 'Negro', hex: '#1a1a1a' },
-      { name: 'Azul Royal', hex: '#4169E1' },
-      { name: 'Verde Bosque', hex: '#228B22' }
+      { name: 'Blanco', hex: '#FFFFFF', image:'/images/Remera Polo Classic/Remera Polo blanco.png' },
+      { name: 'Negro', hex: '#1a1a1a', image:'/images/Remera Polo Classic/Remera Polo negra.png' },
+      { name: 'Azul Royal', hex: '#4169E1', image:'/images/Remera Polo Classic/Remera Polo azul.png' },
+      { name: 'Verde Bosque', hex: '#228B22', image:'/images/Remera Polo Classic/Remera Polo verde bosque.png' }
     ],
     stock: 40,
     isFeatured: true
