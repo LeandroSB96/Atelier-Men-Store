@@ -7,14 +7,14 @@ import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/cart/CartDrawer';
 import ProductCard from '@/components/product/ProductCard';
 import ProductFilters from '@/components/product/ProductFilters';
-import { products } from '@/data/products';
+import { useProducts } from '@/hooks/useProducts';
 
 const Shop = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
   const [gridCols, setGridCols] = useState<2 | 3>(3);
   const [searchQuery, setSearchQuery] = useState(searchParams.get('buscar') || '');
-
+  const { products, loading, error } = useProducts();
   const selectedCategory = searchParams.get('categoria') || '';
   const selectedSize = searchParams.get('talle') || '';
   const selectedColor = searchParams.get('color') || '';
@@ -52,7 +52,7 @@ const Shop = () => {
     // Search filter
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
-      result = result.filter(p => 
+      result = result.filter(p =>
         p.name.toLowerCase().includes(term) ||
         p.description.toLowerCase().includes(term) ||
         p.category.toLowerCase().includes(term) ||
@@ -89,7 +89,7 @@ const Shop = () => {
     }
 
     return result;
-  }, [selectedCategory, selectedSize, selectedColor, sortBy, searchTerm]);
+  }, [products, selectedCategory, selectedSize, selectedColor, sortBy, searchTerm]);
 
   const hasActiveFilters = selectedCategory || selectedSize || selectedColor || searchTerm;
 
@@ -151,7 +151,7 @@ const Shop = () => {
                 onCategoryChange={(v) => updateFilter('categoria', v)}
                 onSizeChange={(v) => updateFilter('talle', v)}
                 onColorChange={(v) => updateFilter('color', v)}
-                onPriceChange={() => {}}
+                onPriceChange={() => { }}
                 onClearFilters={clearFilters}
               />
             </aside>
@@ -307,7 +307,7 @@ const Shop = () => {
               onCategoryChange={(v) => { updateFilter('categoria', v); }}
               onSizeChange={(v) => { updateFilter('talle', v); }}
               onColorChange={(v) => { updateFilter('color', v); }}
-              onPriceChange={() => {}}
+              onPriceChange={() => { }}
               onClearFilters={() => { clearFilters(); setShowFilters(false); }}
             />
           </motion.div>
