@@ -1,6 +1,16 @@
 import { useState, useEffect } from 'react';
 
-const API_URL = 'http://192.168.1.38:3000';
+const API_URL = 'http://localhost:3000';
+
+interface ApiImage { url: string; }
+interface ApiColor { name: string; hex: string; }
+interface ApiSize { size: string; }
+interface ApiProduct {
+  images: ApiImage[];
+  colors: ApiColor[];
+  sizes: ApiSize[];
+  [key: string]: unknown;
+}
 
 export const useProducts = () => {
   const [products, setProducts] = useState([]);
@@ -11,7 +21,13 @@ export const useProducts = () => {
     fetch(`${API_URL}/api/products`)
       .then((res) => res.json())
       .then((data) => {
-        setProducts(data.products);
+        const transformed = data.products.map((p: ApiProduct) => ({
+          ...p,
+          images: p.images.map((img) => img.url),
+          colors: p.colors.map((c) => ({ name: c.name, hex: c.hex })),
+          sizes: p.sizes.map((s) => s.size),
+        }));
+        setProducts(transformed);
         setLoading(false);
       })
       .catch((err) => {

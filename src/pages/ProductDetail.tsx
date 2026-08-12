@@ -1,16 +1,18 @@
-import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Minus, Plus, Heart, Share2, Truck, RotateCcw, Shield } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Minus, Plus, Heart, Share2, Truck, RotateCcw, Shield, Sparkles, Ruler, CheckCircle2 } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/cart/CartDrawer';
 import { getProductById, products } from '@/data/products';
 import { useCart } from '@/context/CartContext';
 import ProductCard from '@/components/product/ProductCard';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const product = getProductById(id || '');
   const { addItem, setCartOpen } = useCart();
 
@@ -19,6 +21,17 @@ const ProductDetail = () => {
   const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [selectionMessage, setSelectionMessage] = useState<string | null>(null);
+  const [selectionModalOpen, setSelectionModalOpen] = useState(false);
+  const [selectionModalTitle, setSelectionModalTitle] = useState('Completa tu selección');
+  const [selectionModalDescription, setSelectionModalDescription] = useState('');
+
+  useEffect(() => {
+    if (selectionMessage) {
+      const timer = window.setTimeout(() => setSelectionMessage(null), 2400);
+      return () => window.clearTimeout(timer);
+    }
+  }, [selectionMessage]);
 
   // Obtener la imagen del color seleccionado si existe
   const getImageForColor = () => {
@@ -60,15 +73,50 @@ const ProductDetail = () => {
     }).format(price);
   };
 
-  const handleAddToCart = () => {
-    if (!selectedSize || !selectedColor) {
-      alert('Por favor selecciona un talle y un color');
-      return;
+  const validateSelection = () => {
+    if (!selectedColor && !selectedSize) {
+      setSelectionModalTitle('Completa tu selección');
+      setSelectionModalDescription('Para continuar, elegí un talle y un color.');
+      setSelectionModalOpen(true);
+      return false;
     }
+
+    if (!selectedColor) {
+      setSelectionModalTitle('Falta el color');
+      setSelectionModalDescription('Elegí el color que prefieras para poder continuar.');
+      setSelectionModalOpen(true);
+      return false;
+    }
+
+    if (!selectedSize) {
+      setSelectionModalTitle('Falta el talle');
+      setSelectionModalDescription('Seleccioná el talle para terminar tu compra.');
+      setSelectionModalOpen(true);
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleAddToCart = () => {
+    if (!validateSelection()) return;
+
     for (let i = 0; i < quantity; i++) {
       addItem(product, selectedSize, selectedColor);
     }
+
+    setSelectionMessage(`${product.name} fue agregado al carrito.`);
     setCartOpen(true);
+  };
+
+  const handleBuyNow = () => {
+    if (!validateSelection()) return;
+
+    for (let i = 0; i < quantity; i++) {
+      addItem(product, selectedSize, selectedColor);
+    }
+
+    navigate('/checkout');
   };
 
   const relatedProducts = products
@@ -179,6 +227,15 @@ const ProductDetail = () => {
                   {product.description}
                 </p>
 
+                <div className="mt-5 flex flex-wrap gap-2 text-sm text-muted-foreground">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1">
+                    <Sparkles size={14} /> Envío rápido
+                  </span>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1">
+                    <Shield size={14} /> Pago seguro
+                  </span>
+                </div>
+
                 {/* Color selection */}
                 <div className="mt-6">
                   <div className="flex items-center justify-between mb-3">
@@ -206,13 +263,75 @@ const ProductDetail = () => {
                 <div className="mt-6">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-sm font-medium">Talle</span>
-                    <button className="text-sm text-accent hover:underline">Guía de talles</button>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button className="inline-flex items-center gap-2 text-sm text-accent hover:underline">
+                          <Ruler size={16} /> Guía de talles
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-2xl">
+                        <DialogHeader>
+                          <DialogTitle>Guía de talles</DialogTitle>
+                          <DialogDescription>
+                            Recomendamos medir tu prenda favorita y comparar con esta tabla para elegir el ajuste ideal.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="grid gap-4 md:grid-cols-[1.1fr_0.9fr]">
+                          <div className="rounded-xl border border-border bg-muted/30 p-4 space-y-3">
+                            <h3 className="font-medium">Consejo de compra</h3>
+                            <p className="text-sm text-muted-foreground">
+                              Si te gusta un ajuste más relajado, subí un talle. Para una silueta más limpia, mantenete en tu medida habitual.
+                            </p>
+                            <div className="flex items-center gap-2 text-sm text-foreground">
+                              <CheckCircle2 size={16} className="text-accent" />
+                              <span>Devoluciones simples si no te queda perfecto.</span>
+                            </div>
+                          </div>
+                          <div className="overflow-hidden rounded-xl border border-border">
+                            <table className="min-w-full text-sm">
+                              <thead className="bg-muted/60 text-left">
+                                <tr>
+                                  <th className="px-3 py-2 font-medium">Talle</th>
+                                  <th className="px-3 py-2 font-medium">Ancho</th>
+                                  <th className="px-3 py-2 font-medium">Largo</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr className="border-t border-border">
+                                  <td className="px-3 py-2">S</td>
+                                  <td className="px-3 py-2">44 cm</td>
+                                  <td className="px-3 py-2">64 cm</td>
+                                </tr>
+                                <tr className="border-t border-border">
+                                  <td className="px-3 py-2">M</td>
+                                  <td className="px-3 py-2">48 cm</td>
+                                  <td className="px-3 py-2">66 cm</td>
+                                </tr>
+                                <tr className="border-t border-border">
+                                  <td className="px-3 py-2">L</td>
+                                  <td className="px-3 py-2">52 cm</td>
+                                  <td className="px-3 py-2">68 cm</td>
+                                </tr>
+                                <tr className="border-t border-border">
+                                  <td className="px-3 py-2">XL</td>
+                                  <td className="px-3 py-2">56 cm</td>
+                                  <td className="px-3 py-2">70 cm</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {product.sizes.map((size) => (
                       <button
                         key={size}
-                        onClick={() => setSelectedSize(size)}
+                        onClick={() => {
+                          setSelectedSize(size);
+                          setSelectionMessage(null);
+                        }}
                         className={`min-w-[48px] px-4 py-2 border text-sm font-medium transition-colors ${
                           selectedSize === size
                             ? 'border-foreground bg-foreground text-background'
@@ -222,6 +341,17 @@ const ProductDetail = () => {
                         {size}
                       </button>
                     ))}
+                  </div>
+                </div>
+
+                <div className="mt-4 rounded-xl border border-border/70 bg-muted/30 p-4">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Tu selección</span>
+                    <span className="font-medium text-foreground">{selectedColor || 'Elige un color'}</span>
+                  </div>
+                  <div className="mt-2 flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Talle</span>
+                    <span className="font-medium text-foreground">{selectedSize || 'Elige un talle'}</span>
                   </div>
                 </div>
 
@@ -251,31 +381,71 @@ const ProductDetail = () => {
                 </div>
 
                 {/* Actions */}
-                <div className="mt-8 flex gap-3">
+                <div className="mt-8 flex flex-col gap-3">
+                  <div className="flex gap-3">
+                    <button
+                      onClick={handleAddToCart}
+                      className="flex-1 py-4 bg-primary text-primary-foreground font-medium uppercase tracking-wider hover:bg-primary/90 transition-colors"
+                    >
+                      Agregar al Carrito
+                    </button>
+                    <button
+                      onClick={() => setIsWishlisted(!isWishlisted)}
+                      className={`p-4 border transition-colors ${
+                        isWishlisted ? 'border-accent bg-accent/10' : 'border-border hover:border-foreground'
+                      }`}
+                    >
+                      <Heart size={20} className={isWishlisted ? 'fill-accent text-accent' : ''} />
+                    </button>
+                    <button className="p-4 border border-border hover:border-foreground transition-colors">
+                      <Share2 size={20} />
+                    </button>
+                  </div>
+
                   <button
-                    onClick={handleAddToCart}
-                    className="flex-1 py-4 bg-primary text-primary-foreground font-medium uppercase tracking-wider hover:bg-primary/90 transition-colors"
+                    onClick={handleBuyNow}
+                    className="w-full py-4 border border-border bg-background text-foreground font-medium uppercase tracking-wider hover:bg-muted hover:text-foreground transition-colors"
                   >
-                    Agregar al Carrito
-                  </button>
-                  <button
-                    onClick={() => setIsWishlisted(!isWishlisted)}
-                    className={`p-4 border transition-colors ${
-                      isWishlisted ? 'border-accent bg-accent/10' : 'border-border hover:border-foreground'
-                    }`}
-                  >
-                    <Heart size={20} className={isWishlisted ? 'fill-accent text-accent' : ''} />
-                  </button>
-                  <button className="p-4 border border-border hover:border-foreground transition-colors">
-                    <Share2 size={20} />
+                    Comprar ahora
                   </button>
                 </div>
+
+                {selectionMessage && (
+                  <div className="mt-4 flex items-center gap-2 rounded-lg border border-accent/30 bg-accent/10 px-3 py-2 text-sm text-accent">
+                    <CheckCircle2 size={16} />
+                    <span>{selectionMessage}</span>
+                  </div>
+                )}
+
+                <Dialog open={selectionModalOpen} onOpenChange={setSelectionModalOpen}>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle>{selectionModalTitle}</DialogTitle>
+                      <DialogDescription>{selectionModalDescription}</DialogDescription>
+                    </DialogHeader>
+                    <div className="rounded-xl border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
+                      <p className="font-medium text-foreground">Tu compra necesita estos datos:</p>
+                      <ul className="mt-2 space-y-2">
+                        <li>• Color seleccionado: {selectedColor || 'Aún no elegiste uno'}</li>
+                        <li>• Talle seleccionado: {selectedSize || 'Aún no elegiste uno'}</li>
+                      </ul>
+                    </div>
+                    <div className="flex justify-end">
+                      <button
+                        onClick={() => setSelectionModalOpen(false)}
+                        className="rounded-sm bg-foreground px-4 py-2 text-sm font-medium text-background hover:bg-foreground/90"
+                      >
+                        Entendido
+                      </button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
 
                 {/* Features */}
                 <div className="mt-8 pt-8 border-t border-border space-y-4">
                   <div className="flex items-center gap-3 text-sm">
                     <Truck size={20} className="text-muted-foreground" />
-                    <span>Envío gratis en compras mayores a $50.000</span>
+                    <span>Envío gratis en compras mayores a $80.000</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     <RotateCcw size={20} className="text-muted-foreground" />

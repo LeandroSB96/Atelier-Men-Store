@@ -36,7 +36,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <Link to={`/producto/${product.id}`} className="block">
         <div className="relative aspect-[3/4] overflow-hidden bg-secondary/30">
           <motion.img
-            src={isHovered && product.images[1] ? product.images[1] : product.images[0]}
+            src={isHovered && product.images?.[1] ? product.images[1] : product.images?.[0] ?? '/images/placeholder.svg'}
             alt={product.name}
             className="w-full h-full object-cover"
             animate={{ scale: isHovered ? 1.03 : 1 }}
@@ -105,7 +105,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </div>
         {/* Color dots - subtle */}
         <div className="flex gap-1.5 pt-1">
-          {product.colors.slice(0, 4).map((color) => (
+          {(product.colors ?? []).slice(0, 4).map((color) => (
             <span
               key={color.name}
               className="w-3 h-3 rounded-full border border-border/50"

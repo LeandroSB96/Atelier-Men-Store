@@ -1,20 +1,20 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Filter, X, Grid3X3, LayoutGrid, Search } from 'lucide-react';
+import { Filter, X, Grid3X3, LayoutGrid, Search, ShieldCheck, Sparkles, Truck } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/cart/CartDrawer';
 import ProductCard from '@/components/product/ProductCard';
 import ProductFilters from '@/components/product/ProductFilters';
-import { useProducts } from '@/hooks/useProducts';
+import { products } from '@/data/products';
 
 const Shop = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
   const [gridCols, setGridCols] = useState<2 | 3>(3);
   const [searchQuery, setSearchQuery] = useState(searchParams.get('buscar') || '');
-  const { products, loading, error } = useProducts();
+  
   const selectedCategory = searchParams.get('categoria') || '';
   const selectedSize = searchParams.get('talle') || '';
   const selectedColor = searchParams.get('color') || '';
@@ -54,22 +54,26 @@ const Shop = () => {
       const term = searchTerm.toLowerCase();
       result = result.filter(p =>
         p.name.toLowerCase().includes(term) ||
-        p.description.toLowerCase().includes(term) ||
+        p.description?.toLowerCase().includes(term) ||
         p.category.toLowerCase().includes(term) ||
-        p.colors.some(c => c.name.toLowerCase().includes(term))
+        (p.colors ?? []).some(c => c.name.toLowerCase().includes(term))
       );
     }
 
     if (selectedCategory) {
-      result = result.filter(p => p.category === selectedCategory);
+      result = result.filter(p =>
+        p.category.toLowerCase() === selectedCategory.toLowerCase()
+      );
     }
 
     if (selectedSize) {
-      result = result.filter(p => p.sizes.includes(selectedSize));
+      result = result.filter(p => (p.sizes ?? []).includes(selectedSize));
     }
 
     if (selectedColor) {
-      result = result.filter(p => p.colors.some(c => c.name === selectedColor));
+      result = result.filter(p =>
+        (p.colors ?? []).some(c => c.name === selectedColor)
+      );
     }
 
     // Sort
@@ -84,7 +88,6 @@ const Shop = () => {
         result.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
         break;
       default:
-        // relevancia - featured first
         result.sort((a, b) => (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0));
     }
 
@@ -138,6 +141,30 @@ const Shop = () => {
                 Buscar
               </button>
             </form>
+          </div>
+
+          <div className="mb-6 grid gap-3 rounded-2xl border border-border bg-card/80 p-4 md:grid-cols-3">
+            <div className="flex items-start gap-3">
+              <Truck size={18} className="mt-0.5 text-accent" />
+              <div>
+                <p className="text-sm font-medium">Envío rápido</p>
+                <p className="text-sm text-muted-foreground">Envíos ágiles y seguimiento en tiempo real.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <ShieldCheck size={18} className="mt-0.5 text-accent" />
+              <div>
+                <p className="text-sm font-medium">Pago seguro</p>
+                <p className="text-sm text-muted-foreground">Protección y compra confiable en cada paso.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <Sparkles size={18} className="mt-0.5 text-accent" />
+              <div>
+                <p className="text-sm font-medium">Prendas premium</p>
+                <p className="text-sm text-muted-foreground">Calidad superior con estilo y comodidad.</p>
+              </div>
+            </div>
           </div>
 
           <div className="flex gap-8">

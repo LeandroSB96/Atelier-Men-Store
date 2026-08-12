@@ -20,5 +20,41 @@ model Product {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  images    ProductImage[]
+  colors    ProductColor[]
+  sizes     ProductSize[]
+
   @@map("products")
+}
+
+model ProductImage {
+  id        String  @id @default(uuid())
+  productId String
+  url       String
+  order     Int     @default(0)
+  
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@map("product_images")
+}
+
+model ProductColor {
+  id        String  @id @default(uuid())
+  productId String
+  name      String
+  hex       String
+  
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@map("product_colors")
+}
+
+model ProductSize {
+  id        String  @id @default(uuid())
+  productId String
+  size      String
+  
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@map("product_sizes")
 }
