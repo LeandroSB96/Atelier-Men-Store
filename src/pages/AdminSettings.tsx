@@ -67,10 +67,10 @@ const SettingsPage: React.FC = () => {
   }) => (
     <div className="p-6 border-b border-gray-200 last:border-b-0">
       <div className="flex gap-4">
-        {Icon && <div className="text-blue-600 mt-1">{Icon}</div>}
+        {Icon && <div className="text-blue-600 dark:text-blue-400 mt-1">{Icon}</div>}
         <div className="flex-1">
-          <label className="block font-semibold text-gray-900 mb-1">{label}</label>
-          <p className="text-sm text-gray-600 mb-3">{description}</p>
+          <label className="block font-semibold text-gray-900 dark:text-gray-100 mb-1">{label}</label>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{description}</p>
           {children}
         </div>
       </div>
@@ -82,15 +82,15 @@ const SettingsPage: React.FC = () => {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">Configuración</h2>
-          <p className="text-gray-600 mt-1">Administra la configuración de tu tienda</p>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Configuración</h2>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">Administra la configuración de tu tienda</p>
         </div>
 
         {/* Alerts */}
         {showSuccess && (
-          <Alert className="bg-green-50 border-green-200">
-            <CheckCircle2 className="h-4 w-4 text-green-600" />
-            <AlertDescription className="text-green-800">
+          <Alert className="bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800">
+            <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />
+            <AlertDescription className="text-green-800 dark:text-green-300">
               Configuración guardada exitosamente
             </AlertDescription>
           </Alert>
@@ -164,7 +164,7 @@ const SettingsPage: React.FC = () => {
                   <select
                     value={settings.currency}
                     onChange={(e) => handleInputChange('currency', e.target.value)}
-                    className="max-w-md px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="max-w-md px-3 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                   >
                     <option value="USD">USD - Dólar Estadounidense</option>
                     <option value="EUR">EUR - Euro</option>

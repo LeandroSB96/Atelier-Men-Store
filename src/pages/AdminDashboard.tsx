@@ -79,8 +79,8 @@ const Dashboard: React.FC = () => {
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-600 font-medium">{label}</p>
-            <p className="text-2xl font-bold text-gray-900 mt-2">{value}</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">{label}</p>
+            <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-2">{value}</p>
             {trend !== undefined && (
               <p className={`text-xs mt-2 flex items-center gap-1 ${trend > 0 ? 'text-green-600' : 'text-red-600'}`}>
                 <TrendingUp className="h-3 w-3" />
@@ -101,8 +101,8 @@ const Dashboard: React.FC = () => {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">Bienvenido al Dashboard</h2>
-          <p className="text-gray-600 mt-2">Aquí encontrarás un resumen de tu tienda</p>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Bienvenido al Dashboard</h2>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">Aquí encontrarás un resumen de tu tienda</p>
         </div>
 
         {/* Stat Cards */}
@@ -141,8 +141,8 @@ const Dashboard: React.FC = () => {
           {/* Line Chart - Ventas por día */}
           <Card className="lg:col-span-2 border-0 shadow-sm">
             <CardHeader>
-              <CardTitle>Ventas Diarias</CardTitle>
-              <CardDescription>Últimos 7 días</CardDescription>
+              <CardTitle className="dark:text-gray-100">Ventas Diarias</CardTitle>
+              <CardDescription className="dark:text-gray-400">Últimos 7 días</CardDescription>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -175,8 +175,8 @@ const Dashboard: React.FC = () => {
           {/* Pie Chart - Categorías */}
           <Card className="border-0 shadow-sm">
             <CardHeader>
-              <CardTitle>Ventas por Categoría</CardTitle>
-              <CardDescription>Distribución</CardDescription>
+              <CardTitle className="dark:text-gray-100">Ventas por Categoría</CardTitle>
+              <CardDescription className="dark:text-gray-400">Distribución</CardDescription>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -205,8 +205,8 @@ const Dashboard: React.FC = () => {
         {/* Charts Row 2 */}
         <Card className="border-0 shadow-sm">
           <CardHeader>
-            <CardTitle>Productos Más Vendidos</CardTitle>
-            <CardDescription>Top 5 productos</CardDescription>
+            <CardTitle className="dark:text-gray-100">Productos Más Vendidos</CardTitle>
+            <CardDescription className="dark:text-gray-400">Top 5 productos</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -230,15 +230,15 @@ const Dashboard: React.FC = () => {
         </Card>
 
         {/* Alertas */}
-        <Card className="border-l-4 border-l-amber-500 bg-amber-50 border-0">
+        <Card className="border-l-4 border-l-amber-500 bg-amber-50 dark:bg-amber-950 dark:border-l-amber-600 border-0">
           <CardContent className="p-6">
             <div className="flex items-start gap-4">
-              <div className="text-amber-600 mt-1">
+              <div className="text-amber-600 dark:text-amber-400 mt-1">
                 <TrendingUp className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="font-semibold text-amber-900">Productos con bajo stock</h3>
-                <p className="text-sm text-amber-800 mt-1">
+                <h3 className="font-semibold text-amber-900 dark:text-amber-200">Productos con bajo stock</h3>
+                <p className="text-sm text-amber-800 dark:text-amber-300 mt-1">
                   {stats.lowStockProducts} productos tienen menos de 10 unidades en stock. Considera hacer un nuevo pedido.
                 </p>
               </div>

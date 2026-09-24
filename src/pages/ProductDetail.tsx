@@ -5,15 +5,18 @@ import { ChevronLeft, ChevronRight, Minus, Plus, Heart, Share2, Truck, RotateCcw
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/cart/CartDrawer';
-import { getProductById, products } from '@/data/products';
+import { products } from '@/data/products';
+import { useProduct } from '@/hooks/useProduct';
 import { useCart } from '@/context/CartContext';
 import ProductCard from '@/components/product/ProductCard';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useProducts } from '@/hooks/useProducts';
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const product = getProductById(id || '');
+  const { product, loading, error } = useProduct(id);
+  const { products: allProducts } = useProducts();
   const { addItem, setCartOpen } = useCart();
 
   const [selectedImage, setSelectedImage] = useState(0);
@@ -51,6 +54,14 @@ const ProductDetail = () => {
       }
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground">Cargando producto...</div>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -119,8 +130,8 @@ const ProductDetail = () => {
     navigate('/checkout');
   };
 
-  const relatedProducts = products
-    .filter(p => p.category === product.category && p.id !== product.id)
+  const relatedProducts = allProducts
+    .filter(p => p.category === product?.category && p.id !== product?.id)
     .slice(0, 4);
 
   return (
@@ -154,7 +165,7 @@ const ProductDetail = () => {
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
-                
+
                 {/* Navigation arrows */}
                 {product.images.length > 1 && (
                   <>
@@ -194,9 +205,8 @@ const ProductDetail = () => {
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`w-20 h-24 overflow-hidden border-2 transition-colors ${
-                      selectedImage === index ? 'border-foreground' : 'border-transparent'
-                    }`}
+                    className={`w-20 h-24 overflow-hidden border-2 transition-colors ${selectedImage === index ? 'border-foreground' : 'border-transparent'
+                      }`}
                   >
                     <img src={image} alt="" className="w-full h-full object-cover" />
                   </button>
@@ -247,11 +257,10 @@ const ProductDetail = () => {
                       <button
                         key={color.name}
                         onClick={() => handleColorSelect(color.name)}
-                        className={`w-10 h-10 rounded-full border-2 transition-all ${
-                          selectedColor === color.name
-                            ? 'border-foreground ring-2 ring-foreground ring-offset-2'
-                            : 'border-border hover:border-muted-foreground'
-                        }`}
+                        className={`w-10 h-10 rounded-full border-2 transition-all ${selectedColor === color.name
+                          ? 'border-foreground ring-2 ring-foreground ring-offset-2'
+                          : 'border-border hover:border-muted-foreground'
+                          }`}
                         style={{ backgroundColor: color.hex }}
                         title={color.name}
                       />
@@ -332,11 +341,10 @@ const ProductDetail = () => {
                           setSelectedSize(size);
                           setSelectionMessage(null);
                         }}
-                        className={`min-w-[48px] px-4 py-2 border text-sm font-medium transition-colors ${
-                          selectedSize === size
-                            ? 'border-foreground bg-foreground text-background'
-                            : 'border-border hover:border-foreground'
-                        }`}
+                        className={`min-w-[48px] px-4 py-2 border text-sm font-medium transition-colors ${selectedSize === size
+                          ? 'border-foreground bg-foreground text-background'
+                          : 'border-border hover:border-foreground'
+                          }`}
                       >
                         {size}
                       </button>
@@ -391,9 +399,8 @@ const ProductDetail = () => {
                     </button>
                     <button
                       onClick={() => setIsWishlisted(!isWishlisted)}
-                      className={`p-4 border transition-colors ${
-                        isWishlisted ? 'border-accent bg-accent/10' : 'border-border hover:border-foreground'
-                      }`}
+                      className={`p-4 border transition-colors ${isWishlisted ? 'border-accent bg-accent/10' : 'border-border hover:border-foreground'
+                        }`}
                     >
                       <Heart size={20} className={isWishlisted ? 'fill-accent text-accent' : ''} />
                     </button>

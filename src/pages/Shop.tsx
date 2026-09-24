@@ -7,14 +7,26 @@ import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/cart/CartDrawer';
 import ProductCard from '@/components/product/ProductCard';
 import ProductFilters from '@/components/product/ProductFilters';
-import { products } from '@/data/products';
+import { useProducts } from '@/hooks/useProducts';
+
+const ProductCardSkeleton = () => (
+  <div className="animate-pulse rounded-2xl border border-border bg-card overflow-hidden">
+    <div className="aspect-[4/5] bg-muted" />
+    <div className="space-y-3 p-4">
+      <div className="h-4 w-2/3 rounded bg-muted" />
+      <div className="h-4 w-1/2 rounded bg-muted" />
+      <div className="h-4 w-1/3 rounded bg-muted" />
+    </div>
+  </div>
+);
 
 const Shop = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
   const [gridCols, setGridCols] = useState<2 | 3>(3);
   const [searchQuery, setSearchQuery] = useState(searchParams.get('buscar') || '');
-  
+  const { products, loading, error } = useProducts();
+
   const selectedCategory = searchParams.get('categoria') || '';
   const selectedSize = searchParams.get('talle') || '';
   const selectedColor = searchParams.get('color') || '';
@@ -273,7 +285,13 @@ const Shop = () => {
               )}
 
               {/* Product grid */}
-              {filteredProducts.length > 0 ? (
+              {loading ? (
+                <div className={`grid grid-cols-2 ${gridCols === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-4 md:gap-6`}>
+                  {Array.from({ length: 6 }).map((_, index) => (
+                    <ProductCardSkeleton key={index} />
+                  ))}
+                </div>
+              ) : filteredProducts.length > 0 ? (
                 <div className={`grid grid-cols-2 ${gridCols === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-4 md:gap-6`}>
                   {filteredProducts.map((product, index) => (
                     <motion.div

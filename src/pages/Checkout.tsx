@@ -87,24 +87,56 @@ const Checkout = () => {
     setStep('payment');
   };
 
-  const handlePaymentSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handlePaymentSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    if (!paymentMethod) {
-      setPaymentError('Selecciona un método de pago para continuar.');
-      return;
+  if (!paymentMethod) {
+    setPaymentError('Selecciona un método de pago para continuar.');
+    return;
+  }
+
+  if (paymentMethod === 'card' && !isCardDataValid()) {
+    return;
+  }
+
+  setPaymentError('');
+
+  try {
+    const res = await fetch('http://localhost:3000/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({
+        customerName: `${shippingData.firstName} ${shippingData.lastName}`,
+        customerEmail: shippingData.email,
+        paymentMethod,
+        shippingStreet: shippingData.address,
+        shippingCity: shippingData.city,
+        shippingZipCode: shippingData.postalCode,
+        items: items.map((item) => ({
+          productId: item.product.id,
+          productName: item.product.name,
+          quantity: item.quantity,
+          size: item.selectedSize,
+          color: item.selectedColor,
+          price: item.product.price,
+        })),
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || 'Error al crear la orden');
     }
 
-    if (paymentMethod === 'card' && !isCardDataValid()) {
-      return;
-    }
-
-    setPaymentError('');
-    const order = 'AT-' + Math.random().toString(36).substring(2, 11).toUpperCase();
-    setOrderNumber(order);
+    setOrderNumber(data.order.id.slice(0, 8).toUpperCase());
     clearCart();
     setStep('confirmation');
-  };
+  } catch (error) {
+    setPaymentError('Hubo un problema al procesar tu pedido. Intentalo de nuevo.');
+  }
+};
 
   if (items.length === 0 && step !== 'confirmation') {
     return (

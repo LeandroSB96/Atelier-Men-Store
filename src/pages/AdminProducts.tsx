@@ -194,7 +194,7 @@ const ProductsPage: React.FC = () => {
                     value={formData.description || ''}
                     onChange={(e) => handleInputChange('description', e.target.value)}
                     placeholder="Descripción del producto"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                     rows={4}
                   />
                 </div>
@@ -235,13 +235,13 @@ const ProductsPage: React.FC = () => {
         <Card className="border-0 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <Table>
-              <TableHeader className="bg-gray-50">
+              <TableHeader className="bg-gray-50 dark:bg-slate-800">
                 <TableRow className="border-gray-200">
-                  <TableHead className="text-gray-700 font-semibold">Nombre</TableHead>
-                  <TableHead className="text-gray-700 font-semibold">Categoría</TableHead>
-                  <TableHead className="text-gray-700 font-semibold text-right">Precio</TableHead>
-                  <TableHead className="text-gray-700 font-semibold text-right">Stock</TableHead>
-                  <TableHead className="text-gray-700 font-semibold text-right">Acciones</TableHead>
+                  <TableHead className="text-gray-700 dark:text-gray-300 font-semibold">Nombre</TableHead>
+                  <TableHead className="text-gray-700 dark:text-gray-300 font-semibold">Categoría</TableHead>
+                  <TableHead className="text-gray-700 dark:text-gray-300 font-semibold text-right">Precio</TableHead>
+                  <TableHead className="text-gray-700 dark:text-gray-300 font-semibold text-right">Stock</TableHead>
+                  <TableHead className="text-gray-700 dark:text-gray-300 font-semibold text-right">Acciones</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -249,13 +249,13 @@ const ProductsPage: React.FC = () => {
                   filteredProducts.map((product) => (
                     <TableRow
                       key={product.id}
-                      className="border-gray-200 hover:bg-gray-50 transition-colors"
+                      className="border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
                     >
-                      <TableCell className="font-medium text-gray-900">
+                      <TableCell className="font-medium text-gray-900 dark:text-gray-100">
                         {product.name}
                       </TableCell>
-                      <TableCell className="text-gray-600">{product.category}</TableCell>
-                      <TableCell className="text-right text-gray-900 font-semibold">
+                      <TableCell className="text-gray-600 dark:text-gray-400">{product.category}</TableCell>
+                      <TableCell className="text-right text-gray-900 dark:text-gray-100 font-semibold">
                         ${product.price.toFixed(2)}
                       </TableCell>
                       <TableCell className="text-right">
@@ -305,7 +305,7 @@ const ProductsPage: React.FC = () => {
               </TableBody>
             </Table>
           </div>
-          <CardContent className="p-4 border-t border-gray-200 bg-gray-50">
+          <CardContent className="p-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50">
             <p className="text-sm text-gray-600">
               Total: <span className="font-semibold">{filteredProducts.length}</span> productos
             </p>

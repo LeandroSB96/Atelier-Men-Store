@@ -43,6 +43,7 @@ model ProductColor {
   productId String
   name      String
   hex       String
+  imageUrl  String?
   
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   
@@ -57,4 +58,49 @@ model ProductSize {
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   
   @@map("product_sizes")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("ADMIN")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Order {
+  id              String   @id @default(uuid())
+  customerName    String
+  customerEmail   String
+  total           Decimal  @db.Decimal(10, 2)
+  status          String   @default("PENDING")
+  paymentMethod   String
+  shippingStreet  String
+  shippingCity    String
+  shippingZipCode String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  items           OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id          String  @id @default(uuid())
+  orderId     String
+  productId   String
+  productName String
+  quantity    Int
+  size        String
+  color       String
+  price       Decimal @db.Decimal(10, 2)
+
+  order       Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_items")
 }

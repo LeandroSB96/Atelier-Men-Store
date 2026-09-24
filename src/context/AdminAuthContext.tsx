@@ -1,58 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import { AdminUser } from '@/types/admin';
-import { AuthContext, AuthContextType } from './AuthContext';
+import { AuthContext } from './AuthContext';
 
-// Usuarios admin predefinidos (en producción usar una base de datos)
-const ADMIN_USERS: AdminUser[] = [
-  {
-    id: '1',
-    email: 'admin@ateliermen.com',
-    password: 'admin123', // En producción: hashear contraseña
-    role: 'super_admin',
-    createdAt: new Date(),
-  },
-];
+const API_URL = 'http://localhost:3000';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AdminUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Verificar si hay sesión almacenada
-    const storedUser = localStorage.getItem('adminUser');
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch {
-        localStorage.removeItem('adminUser');
-      }
-    }
-    setLoading(false);
+    // Verificar si hay una sesión activa (a través de la cookie)
+    fetch(`${API_URL}/api/auth/me`, {
+      credentials: 'include',
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('No autenticado');
+        return res.json();
+      })
+      .then((data) => {
+        setUser(data.user);
+      })
+      .catch(() => {
+        setUser(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const login = async (email: string, password: string) => {
     setLoading(true);
     try {
-      // Simular autenticación (en producción hacer llamada a API)
-      const adminUser = ADMIN_USERS.find(
-        (u) => u.email === email && u.password === password
-      );
+      const res = await fetch(`${API_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email, password }),
+      });
 
-      if (!adminUser) {
-        throw new Error('Email o contraseña inválidos');
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Email o contraseña inválidos');
       }
 
-      const { password: _, ...userWithoutPassword } = adminUser;
-      setUser(userWithoutPassword as AdminUser);
-      localStorage.setItem('adminUser', JSON.stringify(userWithoutPassword));
+      setUser(data.user);
     } finally {
       setLoading(false);
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await fetch(`${API_URL}/api/auth/logout`, {
+      method: 'POST',
+      credentials: 'include',
+    });
     setUser(null);
-    localStorage.removeItem('adminUser');
   };
 
   return (
@@ -69,6 +72,3 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     </AuthContext.Provider>
   );
 };
-
-// NOTE: `useAuth` hook is exported from a separate file to keep this file
-// exporting only the provider component (improves Fast Refresh behavior).

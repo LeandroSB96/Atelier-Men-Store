@@ -1,9 +1,11 @@
 import dotenv from 'dotenv';
 dotenv.config();
-
 import express from 'express';
 import cors from 'cors';
 import productRoutes from './routes/product.routes';
+import cookieParser from 'cookie-parser';
+import authRoutes from './routes/auth.routes';
+import orderRoutes from './routes/order.routes';
 
 const app = express();
 const PORT = 3000;
@@ -19,7 +21,9 @@ app.use(cors({
 }));
 
 app.use(express.json());
-
+app.use(cookieParser());
+app.use('/api/auth', authRoutes);
+app.use('/api/orders', orderRoutes);
 app.get('/', (req, res) => {
   res.json({ 
     message: 'Atelier Men Store API',

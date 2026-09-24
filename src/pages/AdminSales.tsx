@@ -105,8 +105,8 @@ const SalesPage: React.FC = () => {
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-600 font-medium">{label}</p>
-            <p className="text-2xl font-bold text-gray-900 mt-2">{value}</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">{label}</p>
+            <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-2">{value}</p>
             {change !== undefined && (
               <p
                 className={`text-xs mt-2 flex items-center gap-1 ${
@@ -133,8 +133,8 @@ const SalesPage: React.FC = () => {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">Análisis de Ventas</h2>
-          <p className="text-gray-600 mt-1">Visualiza tus métricas de ventas y rendimiento</p>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Análisis de Ventas</h2>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">Visualiza tus métricas de ventas y rendimiento</p>
         </div>
 
         {/* KPI Cards */}
@@ -309,15 +309,15 @@ const SalesPage: React.FC = () => {
           <CardContent>
             <div className="space-y-4">
               {topProductsSalesData.map((product, index) => (
-                <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div key={index} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-800 rounded-lg">
                   <div className="flex-1">
-                    <p className="font-semibold text-gray-900">{product.name}</p>
-                    <p className="text-xs text-gray-600">
+                    <p className="font-semibold text-gray-900 dark:text-gray-100">{product.name}</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
                       {product.units} unidades vendidas
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-gray-900">{formatPrice(product.revenue)}</p>
+                    <p className="font-bold text-gray-900 dark:text-gray-100">{formatPrice(product.revenue)}</p>
                     <p className="text-xs text-green-600 flex items-center justify-end gap-1 mt-1">
                       <TrendingUp className="h-3 w-3" />
                       +{product.growth}%

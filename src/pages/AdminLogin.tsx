@@ -32,15 +32,15 @@ const AdminLogin: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
-      <Card className="w-full max-w-md shadow-lg border-0">
+      <Card className="w-full max-w-md shadow-lg border-0 dark:bg-slate-800 dark:border-slate-700">
         <CardHeader className="space-y-2 pb-8">
           <div className="flex items-center justify-center mb-4">
-            <div className="bg-primary/10 p-3 rounded-lg">
+            <div className="bg-primary/10 dark:bg-primary/20 p-3 rounded-lg">
               <LogIn className="h-6 w-6 text-primary" />
             </div>
           </div>
-          <CardTitle className="text-2xl text-center">Administración</CardTitle>
-          <CardDescription className="text-center">
+          <CardTitle className="text-2xl text-center dark:text-gray-100">Administración</CardTitle>
+          <CardDescription className="text-center dark:text-gray-400">
             Ingresa tus credenciales para acceder al panel de control
           </CardDescription>
         </CardHeader>
@@ -55,7 +55,7 @@ const AdminLogin: React.FC = () => {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Email
               </label>
               <Input
@@ -65,12 +65,12 @@ const AdminLogin: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
-                className="bg-white"
+                className="bg-white dark:bg-slate-700 dark:text-gray-100 dark:border-slate-600 dark:placeholder-gray-500"
               />
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Contraseña
               </label>
               <Input
@@ -80,7 +80,7 @@ const AdminLogin: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={loading}
-                className="bg-white"
+                className="bg-white dark:bg-slate-700 dark:text-gray-100 dark:border-slate-600 dark:placeholder-gray-500"
               />
             </div>
 
@@ -93,9 +93,9 @@ const AdminLogin: React.FC = () => {
             </Button>
           </form>
 
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
-            <p className="text-xs text-gray-600 font-semibold mb-2">Credenciales de prueba:</p>
-            <p className="text-xs text-gray-600">
+          <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-100 dark:border-blue-800">
+            <p className="text-xs text-gray-600 dark:text-gray-300 font-semibold mb-2">Credenciales de prueba:</p>
+            <p className="text-xs text-gray-600 dark:text-gray-400">
               Email: <span className="font-mono">admin@ateliermen.com</span>
             </p>
             <p className="text-xs text-gray-600">

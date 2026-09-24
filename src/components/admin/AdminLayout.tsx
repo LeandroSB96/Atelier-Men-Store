@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/useAdminAuth';
 import { Button } from '@/components/ui/button';
@@ -12,6 +12,8 @@ import {
   Menu,
   X,
   ChevronRight,
+  MoonStar,
+  SunMedium,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -25,6 +27,23 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isDark, setIsDark] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+
+    const savedTheme = localStorage.getItem('atelier-admin-theme');
+    if (savedTheme) {
+      return savedTheme === 'dark';
+    }
+
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.toggle('dark', isDark);
+    root.style.colorScheme = isDark ? 'dark' : 'light';
+    localStorage.setItem('atelier-admin-theme', isDark ? 'dark' : 'light');
+  }, [isDark]);
 
   const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/admin/dashboard' },
@@ -42,7 +61,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 dark:bg-slate-950">
       {/* Sidebar */}
       <aside
         className={cn(
@@ -170,12 +189,23 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Bar */}
-        <div className="h-16 bg-white border-b border-gray-200 flex items-center px-6 shadow-sm">
-          <h1 className="text-xl font-bold text-gray-800">Panel de Administración</h1>
+        <div className="h-16 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 flex items-center px-6 shadow-sm">
+          <h1 className="text-xl font-bold text-gray-800 dark:text-slate-100">Panel de Administración</h1>
+
+          <div className="ml-auto flex items-center">
+            <button
+              type="button"
+              aria-label={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+              onClick={() => setIsDark((prev) => !prev)}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm transition hover:bg-gray-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+            >
+              {isDark ? <SunMedium className="h-5 w-5" /> : <MoonStar className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-auto p-6">
+        <main className="flex-1 overflow-auto p-6 bg-gray-50 dark:bg-slate-950">
           {children}
         </main>
       </div>
